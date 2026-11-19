@@ -2,6 +2,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Hide default Streamlit multi-page auto-navigation file list (app, documents, login, profile, workspace) */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
+/* Hide Streamlit default header toolbar (Deploy, Stop, Hamburger menu) and footer */
+#MainMenu, header[data-testid="stHeader"], footer, [data-testid="stToolbar"], .stDeployButton {
+    display: none !important;
+}
+
 html, body, [class*="css"] {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }

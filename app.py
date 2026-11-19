@@ -94,7 +94,19 @@ user = st.session_state.get("user")
 # ROUTE DISPATCHER
 # =============================================================================
 if not user:
-    # Unauthenticated -> Login Screen (Loads instantly!)
+    # Unauthenticated -> ONLY Login Screen is open (sidebar completely hidden)
+    st.markdown("""
+    <style>
+        [data-testid="stSidebar"], section[data-testid="stSidebar"], [data-testid="collapsedControl"] {
+            display: none !important;
+        }
+        .main .block-container {
+            max-width: 600px !important;
+            padding-top: 3rem !important;
+            margin: 0 auto !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     inject_theme("dark")
     render_login_page(db=db)
 else:

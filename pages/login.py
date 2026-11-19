@@ -18,23 +18,10 @@ def render_login_page(db: Database):
 
 def render_auth_portal_view(db: Database):
     """
-    Primary Google & Firebase Authentication Screen.
+    Primary Google & Firebase Authentication Screen matching Step 8 PDF specification.
     """
-    st.markdown("""
-    <div style="text-align: center; margin: 30px 0 20px 0;">
-        <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 16px; background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.25); margin-bottom: 12px;">
-            <span style="font-size: 1.8rem;">⚡</span>
-        </div>
-        <h2 style="font-size: 2.2rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px;">
-            Sign in to <span style="color: #2dd4bf;">LocalGPT</span>
-        </h2>
-        <p style="color: #94a3b8; font-size: 0.95rem; max-width: 480px; margin: 6px auto 0 auto;">
-            Authenticate with your Google account to access your private AI assistant and document workspace.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col_l, col_center, col_r = st.columns([1, 1.8, 1])
+    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+    col_l, col_center, col_r = st.columns([1, 1.5, 1])
 
     with col_center:
         # Render Firebase Web Component (Google Sign-In, Email/Password)

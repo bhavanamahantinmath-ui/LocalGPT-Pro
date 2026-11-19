@@ -223,6 +223,16 @@
 </head>
 <body>
     <div class="auth-card" id="authCard">
+        <!-- Header from PDF Specification -->
+        <div style="text-align: center; margin-bottom: 22px;">
+            <div style="font-size: 1.6rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="color: #2dd4bf; font-size: 1.4rem;">◆</span> LocalGPT
+            </div>
+            <div style="font-size: 0.88rem; color: #94a3b8; margin-top: 5px; font-weight: 400;">
+                Your private AI, running locally
+            </div>
+        </div>
+
         <!-- Tab Selector -->
         <div class="tabs">
             <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Log In</button>
@@ -275,7 +285,10 @@
             <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
         </form>
 
-        <a class="forgot-link" id="forgotLink" onclick="handleForgotPassword()">Forgot password?</a>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px;">
+            <a class="forgot-link" id="forgotLink" onclick="handleForgotPassword()" style="margin-top: 0;">Forgot password?</a>
+            <a class="forgot-link" id="toggleModeLink" onclick="switchTab(currentMode === 'login' ? 'signup' : 'login')" style="margin-top: 0; color: #2dd4bf;">New here? Create an account</a>
+        </div>
     </div>
 
     <script>
@@ -357,6 +370,10 @@
             document.getElementById("confirmGroup").style.display = (mode === "signup" ? "block" : "none");
             document.getElementById("strengthBar").style.display = (mode === "signup" ? "block" : "none");
             document.getElementById("forgotLink").style.display = (mode === "login" ? "block" : "none");
+            const toggleLink = document.getElementById("toggleModeLink");
+            if (toggleLink) {
+                toggleLink.innerText = (mode === "login" ? "New here? Create an account" : "Already have an account? Log in");
+            }
             document.getElementById("submitBtn").innerText = (mode === "login" ? "Log In" : "Create Account");
             document.getElementById("msgBox").style.display = "none";
             setFrameHeight();

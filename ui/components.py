@@ -45,26 +45,12 @@ def render_skeleton():
     return st.markdown(skeleton_html, unsafe_allow_html=True)
 
 def render_welcome_hero(user_name: str):
-    """Time-of-day greeting and welcome hero banner."""
-    import datetime
-    hr = datetime.datetime.now().hour
-    if hr < 12:
-        greeting = "Good morning"
-    elif hr < 17:
-        greeting = "Good afternoon"
-    else:
-        greeting = "Good evening"
-
-    st.markdown(f"""
-    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8)); 
-                border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 16px; padding: 28px 24px; text-align: center; margin: 20px 0;">
-        <h1 style="font-size: 2.1rem; margin-bottom: 8px; color: #f8fafc;">
-            {greeting}, {user_name} 👋
+    """Headline matching ChatGPT Cloud aesthetics."""
+    st.markdown("""
+    <div style="text-align: center; margin: 45px auto 30px auto; max-width: 780px;">
+        <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -1.2px; margin-bottom: 8px;">
+            How can I help you <span style="color: #0d9488;">today?</span>
         </h1>
-        <p style="font-size: 1.05rem; color: #94a3b8; max-width: 650px; margin: 0 auto 15px auto;">
-            Your secure, private AI assistant powered by <b>Qwen2.5-Instruct</b>.
-            Explore your personal documents with RAG or inspect neural weights with LLM X-Ray.
-        </p>
     </div>
     """, unsafe_allow_html=True)
 

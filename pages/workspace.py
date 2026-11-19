@@ -88,21 +88,18 @@ def render_workspace_page(
     if not memory.messages:
         render_welcome_hero(user.get("name", "User"))
 
-        st.markdown("##### 💡 Suggested Starter Questions:")
-        chip1, chip2 = st.columns(2)
+        chip1, chip2, chip3 = st.columns(3)
         with chip1:
-            if st.button("🧠 Explain Self-Attention in Transformers", use_container_width=True):
-                st.session_state["pending_prompt"] = "Explain the Multi-Head Attention mechanism in Transformer models with an intuitive example."
-                st.rerun()
-            if st.button("📄 What is Retrieval-Augmented Generation (RAG)?", use_container_width=True):
-                st.session_state["pending_prompt"] = "How does Retrieval-Augmented Generation (RAG) work and what are its key components?"
+            if st.button("✏️ Write or edit", use_container_width=True):
+                st.session_state["pending_prompt"] = "Help me write and edit a clear, professional text."
                 st.rerun()
         with chip2:
-            if st.button("⚡ Compare Convolutional Neural Nets vs Transformers", use_container_width=True):
-                st.session_state["pending_prompt"] = "What are the primary differences between Convolutional Neural Networks and Transformers?"
+            if st.button("🌐 Search the web", use_container_width=True):
+                st.session_state["pending_prompt"] = "Summarize the latest advancements in modern AI and local language models."
                 st.rerun()
-            if st.button("🔒 How does LocalGPT Pro ensure privacy?", use_container_width=True):
-                st.session_state["pending_prompt"] = "Explain how LocalGPT Pro provides 100% private local inference without sending data to external APIs."
+        with chip3:
+            if st.button("🇮🇳 Kannada vocabulary", use_container_width=True):
+                st.session_state["pending_prompt"] = "List common Kannada vocabulary words with their English meanings and usage."
                 st.rerun()
 
     # -------------------------------------------------------------------------

@@ -22,16 +22,14 @@ def render_sidebar(
     active_page = st.session_state.get("nav_page", "workspace")
 
     with st.sidebar:
-        # App Branding Header
+        # App Branding Header matching Screenshot
         st.markdown("""
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-            <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #4f46e5, #06b6d4); 
-                        display: flex; align-items: center; justify-content: center; font-size: 18px; color: white;">
-                ⚡
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 2px 4px;">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px;">
+                <span>ChatGPT</span> <span style="color: #0d9488;">Cloud</span>
             </div>
-            <div>
-                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.5px;">LocalGPT Pro</h3>
-                <span style="font-size: 0.72rem; color: #818cf8; font-weight: 600;">ENTERPRISE LOCAL AI</span>
+            <div style="display: flex; gap: 4px; color: #94a3b8; font-size: 14px;">
+                <span>🔍</span>
             </div>
         </div>
         """, unsafe_allow_html=True)

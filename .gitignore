@@ -1,0 +1,14 @@
+# LocalGPT Pro — Git Ignore Rules
+.env
+serviceAccountKey.json
+*.db
+*.sqlite
+*.bin
+*.jsonl
+__pycache__/
+*.py[cod]
+*$py.class
+data/users/
+data/*.db
+.streamlit/
+

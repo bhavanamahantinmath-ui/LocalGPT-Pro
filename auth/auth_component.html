@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalGPT Pro Auth</title>
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: transparent;
+            color: #f1f5f9;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+        }
+
+        .tabs {
+            display: flex;
+            background: #1f2937;
+            border-radius: 10px;
+            padding: 3px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #374151;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 11px 16px;
+            background: #ffffff;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 18px;
+        }
+
+        .google-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 18px 0;
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #374151;
+        }
+
+        .divider:not(:empty)::before { margin-right: 1em; }
+        .divider:not(:empty)::after { margin-left: 1em; }
+
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .toggle-pw {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.95;
+        }
+
+        .forgot-link {
+            display: block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #818cf8;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .msg-box {
+            display: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .msg-box.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .msg-box.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+        }
+
+        .strength-bar {
+            height: 3px;
+            width: 100%;
+            background: #374151;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card" id="authCard">
+        <!-- Tab Selector -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Log In</button>
+            <button class="tab-btn" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <div id="msgBox" class="msg-box"></div>
+
+        <!-- Google Sign-In Button -->
+        <button class="google-btn" onclick="handleGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            Continue with Google
+        </button>
+
+        <div class="divider">or with email</div>
+
+        <!-- Email & Password Form -->
+        <form id="authForm" onsubmit="handleEmailAuth(event)">
+            <div class="form-group" id="nameGroup" style="display: none;">
+                <label for="displayName">Full Name</label>
+                <input type="text" id="displayName" placeholder="Jane Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="you@domain.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <input type="password" id="password" required placeholder="••••••••" oninput="checkStrength()">
+                    <button type="button" class="toggle-pw" onclick="togglePasswordVisibility()">👁</button>
+                </div>
+                <div class="strength-bar" id="strengthBar" style="display: none;">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+            </div>
+
+            <div class="form-group" id="confirmGroup" style="display: none;">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
+        </form>
+
+        <a class="forgot-link" id="forgotLink" onclick="handleForgotPassword()">Forgot password?</a>
+    </div>
+
+    <script>
+        let currentMode = "login";
+        let firebaseApp = null;
+        let isConfigured = false;
+
+        // Streamlit Component Protocol Handshake
+        function sendToStreamlit(data) {
+            window.parent.postMessage({
+                isStreamlitMessage: true,
+                type: "streamlit:setComponentValue",
+                value: data
+            }, "*");
+        }
+
+        function setFrameHeight() {
+            const h = document.getElementById("authCard").offsetHeight + 35;
+            window.parent.postMessage({
+                isStreamlitMessage: true,
+                type: "streamlit:setFrameHeight",
+                height: Math.max(h, 480)
+            }, "*");
+        }
+
+        window.addEventListener("message", function(event) {
+            if (event.data.type === "streamlit:render") {
+                const config = event.data.args.firebaseConfig;
+                if (config && config.apiKey && !config.apiKey.startsWith("AIzaSyDemo") && !firebaseApp) {
+                    try {
+                        firebaseApp = firebase.initializeApp(config);
+                        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                        isConfigured = true;
+
+                        // Check existing auth state
+                        firebase.auth().onAuthStateChanged(async function(user) {
+                            if (user) {
+                                const token = await user.getIdToken();
+                                sendToStreamlit({
+                                    token: token,
+                                    uid: user.uid,
+                                    email: user.email,
+                                    name: user.displayName || user.email.split("@")[0],
+                                    picture: user.photoURL || "",
+                                    email_verified: user.emailVerified,
+                                    provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : "firebase"
+                                });
+                            }
+                        });
+                    } catch (e) {
+                        console.warn("Firebase Init notice:", e);
+                    }
+                }
+                setFrameHeight();
+            }
+        });
+
+        // Tell Streamlit component is ready
+        window.parent.postMessage({
+            isStreamlitMessage: true,
+            type: "streamlit:componentReady",
+            apiVersion: 1
+        }, "*");
+
+        setTimeout(setFrameHeight, 150);
+
+        function showMessage(msg, isError = true) {
+            const box = document.getElementById("msgBox");
+            box.className = "msg-box " + (isError ? "error" : "success");
+            box.innerText = msg;
+            setFrameHeight();
+        }
+
+        function switchTab(mode) {
+            currentMode = mode;
+            document.getElementById("tabLogin").className = "tab-btn " + (mode === "login" ? "active" : "");
+            document.getElementById("tabSignup").className = "tab-btn " + (mode === "signup" ? "active" : "");
+            document.getElementById("nameGroup").style.display = (mode === "signup" ? "block" : "none");
+            document.getElementById("confirmGroup").style.display = (mode === "signup" ? "block" : "none");
+            document.getElementById("strengthBar").style.display = (mode === "signup" ? "block" : "none");
+            document.getElementById("forgotLink").style.display = (mode === "login" ? "block" : "none");
+            document.getElementById("submitBtn").innerText = (mode === "login" ? "Log In" : "Create Account");
+            document.getElementById("msgBox").style.display = "none";
+            setFrameHeight();
+        }
+
+        function togglePasswordVisibility() {
+            const pw = document.getElementById("password");
+            pw.type = (pw.type === "password" ? "text" : "password");
+        }
+
+        function checkStrength() {
+            if (currentMode !== "signup") return;
+            const val = document.getElementById("password").value;
+            const fill = document.getElementById("strengthFill");
+            let score = 0;
+            if (val.length >= 8) score += 40;
+            if (/[0-9]/.test(val)) score += 30;
+            if (/[^a-zA-Z0-9]/.test(val)) score += 30;
+
+            fill.style.width = score + "%";
+            if (score <= 40) fill.style.backgroundColor = "#ef4444";
+            else if (score <= 70) fill.style.backgroundColor = "#f59e0b";
+            else fill.style.backgroundColor = "#10b981";
+        }
+
+        async function handleGoogleSignIn() {
+            if (!isConfigured) {
+                // Development simulated Google sign-in
+                const devUid = "google_user_" + Math.floor(Math.random() * 100000);
+                sendToStreamlit({
+                    token: "dev_" + devUid,
+                    uid: devUid,
+                    email: "developer@gmail.com",
+                    name: "Google Demo User",
+                    picture: "https://lh3.googleusercontent.com/a/default-user=s96-c",
+                    email_verified: true,
+                    provider: "google.com"
+                });
+                return;
+            }
+
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                const user = result.user;
+                const token = await user.getIdToken();
+                sendToStreamlit({
+                    token: token,
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName || user.email.split("@")[0],
+                    picture: user.photoURL || "",
+                    email_verified: user.emailVerified,
+                    provider: "google.com"
+                });
+            } catch (err) {
+                showMessage(err.message || "Google sign-in was cancelled.");
+            }
+        }
+
+        async function handleEmailAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const name = document.getElementById("displayName").value.trim() || email.split("@")[0];
+
+            if (currentMode === "signup") {
+                const confirmPw = document.getElementById("confirmPassword").value;
+                if (password.length < 8) {
+                    showMessage("Password must be at least 8 characters long.");
+                    return;
+                }
+                if (password !== confirmPw) {
+                    showMessage("Passwords do not match.");
+                    return;
+                }
+            }
+
+            if (!isConfigured) {
+                // Dev mode auth
+                const devUid = "usr_" + Math.abs(email.split('').reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0,0));
+                sendToStreamlit({
+                    token: "dev_" + email,
+                    uid: devUid,
+                    email: email,
+                    name: name,
+                    picture: "",
+                    email_verified: true,
+                    provider: "password"
+                });
+                return;
+            }
+
+            try {
+                if (currentMode === "signup") {
+                    const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    await cred.user.updateProfile({ displayName: name });
+                    try {
+                        await cred.user.sendEmailVerification();
+                    } catch (e) {}
+
+                    const token = await cred.user.getIdToken();
+                    sendToStreamlit({
+                        token: token,
+                        uid: cred.user.uid,
+                        email: cred.user.email,
+                        name: name,
+                        picture: "",
+                        email_verified: cred.user.emailVerified,
+                        provider: "password"
+                    });
+                } else {
+                    const cred = await firebase.auth().signInWithEmailAndPassword(email, password);
+                    const token = await cred.user.getIdToken();
+                    sendToStreamlit({
+                        token: token,
+                        uid: cred.user.uid,
+                        email: cred.user.email,
+                        name: cred.user.displayName || email.split("@")[0],
+                        picture: cred.user.photoURL || "",
+                        email_verified: cred.user.emailVerified,
+                        provider: "password"
+                    });
+                }
+            } catch (err) {
+                showMessage(err.message || "Authentication failed. Check your credentials.");
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = document.getElementById("email").value.trim();
+            if (!email) {
+                showMessage("Please enter your email above to receive a password reset link.");
+                return;
+            }
+            if (!isConfigured) {
+                showMessage("Demo Mode: Password reset link simulated for " + email, false);
+                return;
+            }
+            try {
+                await firebase.auth().sendPasswordResetEmail(email);
+                showMessage("Password reset email sent! Check your inbox.", false);
+            } catch (err) {
+                showMessage(err.message || "Could not send reset email.");
+            }
+        }
+    </script>
+</body>
+</html>

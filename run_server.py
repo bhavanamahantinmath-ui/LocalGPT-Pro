@@ -40,15 +40,15 @@ def open_browser_when_ready():
         time.sleep(0.5)
         try:
             with socket.create_connection(("127.0.0.1", 8501), timeout=0.5):
-                print("\n[LocalGPT Pro] Server is ready! Opening browser at http://127.0.0.1:8501 ...", flush=True)
+                print("\n[LocalGPT Pro] Server is ready! Opening browser at http://localhost:8501 ...", flush=True)
                 time.sleep(0.3)
-                webbrowser.open("http://127.0.0.1:8501")
+                webbrowser.open("http://localhost:8501")
                 return
         except (OSError, ConnectionRefusedError):
             continue
     # Fallback if connection check timed out
     try:
-        webbrowser.open("http://127.0.0.1:8501")
+        webbrowser.open("http://localhost:8501")
     except Exception:
         pass
 

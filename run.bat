@@ -28,10 +28,10 @@ exit /b 1
 
 :RUN_PY
 echo Using Python at: "%PY_EXE%"
-echo Launching LocalGPT Pro at http://127.0.0.1:8501 ...
+echo Launching LocalGPT Pro at http://localhost:8501 ...
 
 :: Open browser automatically as soon as port 8501 accepts connections
-start "" powershell -WindowStyle Hidden -Command "$s = New-Object System.Net.Sockets.TcpClient; for ($i=0; $i -lt 60; $i++) { Start-Sleep -Milliseconds 500; try { $s.Connect('127.0.0.1', 8501); if ($s.Connected) { Start-Process 'http://127.0.0.1:8501'; break } } catch {} }"
+start "" powershell -WindowStyle Hidden -Command "$s = New-Object System.Net.Sockets.TcpClient; for ($i=0; $i -lt 60; $i++) { Start-Sleep -Milliseconds 500; try { $s.Connect('127.0.0.1', 8501); if ($s.Connected) { Start-Process 'http://localhost:8501'; break } } catch {} }"
 
 "%PY_EXE%" -m streamlit run app.py --server.port 8501 --server.address 127.0.0.1 --browser.gatherUsageStats false
 pause

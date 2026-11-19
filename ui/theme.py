@@ -5,35 +5,35 @@ Dynamic Dark/Light theme system for LocalGPT Pro.
 import streamlit as st
 
 THEMES = {
-    "dark": {
-        "bg_main": "#0b0f19",
-        "bg_card": "#111827",
-        "bg_sidebar": "#0f172a",
-        "border": "#1e293b",
-        "text_primary": "#f8fafc",
-        "text_secondary": "#94a3b8",
-        "accent": "#6366f1",
-        "accent_gradient": "linear-gradient(135deg, #4f46e5, #6366f1)",
-        "user_bubble": "rgba(30, 41, 59, 0.8)",
-        "ai_bubble": "rgba(17, 24, 39, 0.7)",
-        "code_bg": "#090d16"
-    },
     "light": {
-        "bg_main": "#f8fafc",
+        "bg_main": "#ffffff",
         "bg_card": "#ffffff",
-        "bg_sidebar": "#f1f5f9",
-        "border": "#e2e8f0",
-        "text_primary": "#0f172a",
-        "text_secondary": "#64748b",
-        "accent": "#4f46e5",
-        "accent_gradient": "linear-gradient(135deg, #4338ca, #4f46e5)",
-        "user_bubble": "rgba(238, 242, 255, 0.9)",
-        "ai_bubble": "rgba(255, 255, 255, 0.95)",
-        "code_bg": "#f1f5f9"
+        "bg_sidebar": "#f9f9fb",
+        "border": "#e5e5e9",
+        "text_primary": "#0d0d0d",
+        "text_secondary": "#6e6e80",
+        "accent": "#0d9488",
+        "accent_gradient": "linear-gradient(135deg, #0d9488, #10b981)",
+        "user_bubble": "#f4f4f7",
+        "ai_bubble": "#ffffff",
+        "code_bg": "#f8f8fa"
+    },
+    "dark": {
+        "bg_main": "#ffffff",
+        "bg_card": "#ffffff",
+        "bg_sidebar": "#f9f9fb",
+        "border": "#e5e5e9",
+        "text_primary": "#0d0d0d",
+        "text_secondary": "#6e6e80",
+        "accent": "#0d9488",
+        "accent_gradient": "linear-gradient(135deg, #0d9488, #10b981)",
+        "user_bubble": "#f4f4f7",
+        "ai_bubble": "#ffffff",
+        "code_bg": "#f8f8fa"
     }
 }
 
-def inject_theme(theme_name: str = "dark"):
+def inject_theme(theme_name: str = "light"):
     """
     Injects custom CSS adhering to the selected theme mode.
     """

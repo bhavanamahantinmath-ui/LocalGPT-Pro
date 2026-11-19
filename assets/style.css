@@ -14,25 +14,97 @@
 
 html, body, [class*="css"] {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff !important;
+    color: #0d0d0d !important;
 }
 
-/* Chat bubble aesthetics */
+/* Pristine white app container */
+.stApp {
+    background-color: #ffffff !important;
+    color: #0d0d0d !important;
+}
+
+/* Modern light sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #f9f9fb !important;
+    border-right: 1px solid #e5e5e9 !important;
+}
+
+/* Chat bubble aesthetics - clean white background, light gray user pill */
 div[data-testid="stChatMessage"] {
-    border-radius: 14px;
-    padding: 16px 20px;
-    margin-bottom: 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 10px 0 !important;
+    margin-bottom: 8px !important;
 }
 
-div[data-testid="stChatMessage"]:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* User chat bubble */
+div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+    background: transparent !important;
 }
 
-/* Subtle border animation on focus */
-.stChatInputContainer textarea:focus {
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
+div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) div[data-testid="stMarkdownContainer"] {
+    background: #f4f4f7 !important;
+    padding: 12px 18px !important;
+    border-radius: 20px !important;
+    border-bottom-right-radius: 4px !important;
+    display: inline-block !important;
+    color: #0d0d0d !important;
+}
+
+/* Assistant chat bubble */
+div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) div[data-testid="stMarkdownContainer"] {
+    color: #0d0d0d !important;
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+}
+
+/* Floating bottom Chat Input Pill */
+div[data-testid="stChatInput"] {
+    background-color: #ffffff !important;
+    border: 1px solid #d9d9e3 !important;
+    border-radius: 32px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    padding: 4px 10px !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+    transition: all 0.2s ease !important;
+}
+
+div[data-testid="stChatInput"]:focus-within {
+    border-color: #0d9488 !important;
+    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.15) !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    background-color: transparent !important;
+    color: #0d0d0d !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 1rem !important;
+}
+
+div[data-testid="stChatInput"] button {
+    background-color: #0d9488 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+/* Action buttons in assistant response */
+div[data-testid="stChatMessage"] button {
+    background: #f4f4f7 !important;
+    color: #4b5563 !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+    padding: 4px 10px !important;
+    transition: all 0.15s ease !important;
+}
+
+div[data-testid="stChatMessage"] button:hover {
+    background: #e5e7eb !important;
+    color: #111827 !important;
 }
 
 /* Source Reference Card */

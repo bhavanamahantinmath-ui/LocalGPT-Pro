@@ -107,7 +107,7 @@ if not user:
         }
     </style>
     """, unsafe_allow_html=True)
-    inject_theme("dark")
+    inject_theme("light")
     render_login_page(db=db)
 else:
     # Authenticated User Session
@@ -119,8 +119,8 @@ else:
     from pages.documents import render_documents_page
     from pages.profile import render_profile_page
 
-    user_theme = user.get("theme", "dark")
-    inject_theme(user_theme)
+    user_theme = user.get("theme", "light")
+    inject_theme("light")
 
     # Lazy-load shared model & RAG engines once user signs in
     with st.spinner("⚡ Initializing local Qwen LLM engine & RAG pipeline..."):

@@ -61,6 +61,33 @@ if os.path.exists(css_path):
 if "nav_page" not in st.session_state:
     st.session_state["nav_page"] = "workspace"
 
+# Check query parameters for automatic redirect from Firebase Google Auth
+if not st.session_state.get("user"):
+    query_params = st.query_params
+    if "email" in query_params:
+        email = query_params.get("email", "")
+        if email:
+            from auth.auth import handle_login
+            uid = query_params.get("uid", f"user_{hash(email)}")
+            name = query_params.get("name", email.split("@")[0])
+            token = query_params.get("token", f"google_{uid}")
+            photo = query_params.get("picture", "")
+            payload = {
+                "token": token,
+                "uid": uid,
+                "email": email,
+                "name": name,
+                "picture": photo,
+                "email_verified": True,
+                "provider": "google.com"
+            }
+            authed_user = handle_login(payload, db=db)
+            if authed_user:
+                st.session_state["user"] = authed_user
+                st.session_state["nav_page"] = "workspace"
+                st.query_params.clear()
+                st.rerun()
+
 user = st.session_state.get("user")
 
 # =============================================================================

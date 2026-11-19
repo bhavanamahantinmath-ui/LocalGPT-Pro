@@ -59,9 +59,23 @@ def verify_token(id_token: str) -> dict:
             # If production verification fails
             raise ValueError(f"Firebase token verification failed: {str(e)}")
 
-    # Development / Offline Fallback mode for simulated tokens
+    # Development / Offline Fallback mode for simulated or unverified tokens
     if id_token.startswith("dev_") or not _admin_initialized:
         try:
+            # Handle JWT token format (header.payload.signature)
+            if id_token.count(".") == 2:
+                parts = id_token.split(".")
+                padded = parts[1] + "=" * ((4 - len(parts[1]) % 4) % 4)
+                jwt_data = json.loads(base64.urlsafe_b64decode(padded.encode()).decode())
+                return {
+                    "uid": jwt_data.get("sub", jwt_data.get("user_id", f"user_{int(time.time())}")),
+                    "email": jwt_data.get("email", "user@localgpt.pro"),
+                    "name": jwt_data.get("name", jwt_data.get("email", "").split("@")[0]),
+                    "picture": jwt_data.get("picture", ""),
+                    "email_verified": jwt_data.get("email_verified", True),
+                    "auth_time": jwt_data.get("auth_time", int(time.time()))
+                }
+
             # Handle simulated token payload
             if id_token.startswith("dev_payload_"):
                 b64 = id_token.replace("dev_payload_", "")

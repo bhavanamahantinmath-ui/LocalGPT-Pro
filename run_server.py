@@ -17,6 +17,9 @@ if DIR not in sys.path:
     sys.path.insert(0, DIR)
 
 # Streamlit environment variables
+home_dir = os.path.abspath(os.path.join(DIR, "..", ".home"))
+os.environ["USERPROFILE"] = home_dir
+os.environ["HOME"] = home_dir
 os.environ["STREAMLIT_SERVER_SHOW_EMAIL_PROMPT"] = "false"
 os.environ["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
 os.environ["STREAMLIT_SERVER_PORT"] = "8501"
@@ -63,6 +66,7 @@ if __name__ == "__main__":
         "--server.port=8501",
         "--server.address=127.0.0.1",
         "--browser.gatherUsageStats=false",
+        "--server.fileWatcherType=none",
         "--server.headless=false"
     ]
     stcli.main()

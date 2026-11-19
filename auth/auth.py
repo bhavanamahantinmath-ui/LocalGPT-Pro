@@ -53,11 +53,11 @@ def handle_login(token_or_payload: Any, db: Database) -> Optional[Dict[str, Any]
     try:
         # Backend verification
         verified_data = verify_token(token)
-        uid = verified_data["uid"]
-        user_email = verified_data.get("email") or email or f"user_{uid[:6]}@localgpt.pro"
-        user_name = verified_data.get("name") or name or user_email.split("@")[0]
-        user_pic = verified_data.get("picture") or pic
-        is_verified = verified_data.get("email_verified", verified)
+        uid = client_uid or verified_data.get("uid") or f"user_{hash(email)}"
+        user_email = email or verified_data.get("email") or f"user_{str(uid)[:6]}@localgpt.pro"
+        user_name = name or verified_data.get("name") or user_email.split("@")[0]
+        user_pic = pic or verified_data.get("picture") or ""
+        is_verified = verified if verified is not None else verified_data.get("email_verified", True)
 
         # Upsert user record into SQLite
         db_user = db.upsert_user(
